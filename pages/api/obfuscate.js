@@ -1,4 +1,4 @@
-import JsConfuser from 'js-confuser'
+// pages/api/obfuscate.js
 import fs from 'fs'
 import path from 'path'
 
@@ -11,6 +11,9 @@ export default async function handler(req, res) {
   }
 
   try {
+    // Dynamic require – hanya di-load saat request, bukan saat build
+    const JsConfuser = require('js-confuser')
+
     let config = {}
 
     if (mode === 'hard') {
