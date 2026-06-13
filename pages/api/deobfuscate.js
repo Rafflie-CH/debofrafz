@@ -1,4 +1,4 @@
-import deobfuscator from 'deobfuscator'
+// pages/api/deobfuscate.js
 import prettier from 'prettier'
 import esprima from 'esprima'
 import escodegen from 'escodegen'
@@ -15,7 +15,8 @@ export default async function handler(req, res) {
     let result
 
     if (mode === 'hard') {
-      // deobfuscate menggunakan library deobfuscator
+      // dynamic require – hanya saat request
+      const deobfuscator = require('deobfuscator')
       result = deobfuscator.deobfuscate(code, {
         arrays: { unpack: true },
         controlFlow: { flattening: true },
@@ -27,7 +28,6 @@ export default async function handler(req, res) {
         simplify: true,
         stringArray: { remove: true },
       })
-      // Prettify hasil akhir
       result = prettier.format(result, { parser: 'babel', printWidth: 120 })
     } else {
       // mode === 'basic' -> hanya unminify & beautify
